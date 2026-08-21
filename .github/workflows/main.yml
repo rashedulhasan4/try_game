@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -30,6 +30,7 @@ jobs:
           mkdir -p builds
 
       - name: Build APK
+        id: export
         uses: firebelley/godot-export@v8.0.0
         with:
           godot_executable_download_url: https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
@@ -44,5 +45,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: empire-legacy-android-debug
-          path: builds/*.apk
+          path: ${{ steps.export.outputs.build_directory }}/Android/*.apk
           if-no-files-found: error
